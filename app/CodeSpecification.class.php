@@ -16,12 +16,15 @@ class CodeSpecification
     function __construct()
     {
 
-        if(isset($_GET['tableName'])) {
+        if (isset($_GET['tableName'])) {
 
             $data = TableReader::getInfo($_GET['tableName']);
-            $className = LabelGenerator::className( $_GET['tableName'] );
 
-            echo '<h3>FORM INFO</h3>
+            if ($data) {
+
+                $className = LabelGenerator::className($_GET['tableName']);
+
+                echo '<h3>FORM INFO</h3>
                   <form action="generator/CodeGenerator.class.php" method="POST">    
                     
                     <input type="hidden" name="tableName" value="' . $_GET['tableName'] . '">
@@ -53,19 +56,26 @@ class CodeSpecification
 
                     $this->createList($data)
 
-                  . '</form>';
+                    . '</form>';
 
-            $this->createList( $data );
+                $this->createList($data);
+
+            } else {
+
+                echo 'Table does not exists.';
+                echo '<form action="../index.html"><input type="submit" value="Back to index"></form>';
+
+            }
 
         }
 
     }
 
-    private function createList( $data )
+    private function createList($data)
     {
 
-        $table =  '<table style="border-spacing: 10px; width: 100%;" >';
-        $table .=  '<tr align="left">
+        $table = '<table style="border-spacing: 10px; width: 100%;" >';
+        $table .= '<tr align="left">
                       <th>Grid?</th>
                       <th>Form?</th>
                       <th>Column</th>
@@ -85,13 +95,13 @@ class CodeSpecification
 
         }
 
-        $table  .= '</table>';
+        $table .= '</table>';
 
         return $table;
 
     }
 
-    private function listItem( $item, $i )
+    private function listItem($item, $i)
     {
 
         $databaseInfo = '<span style="color:blue;">' . $item['column_name'] . '</span>';
@@ -101,14 +111,14 @@ class CodeSpecification
         $databaseInfo .= $item['is_nullable'] == 'NO' ? ' <b>not null</b>' : '';
 
         return '<tr>
-                 <td><input type="checkbox" name="item_grid_'. $i .'"></td>
-                 <td><input type="checkbox" name="item_form_'. $i .'" checked="true"></td>
-                 <td><input type="text" style="border: 0px;" name="item_column_' . $i .'" value="' . $item['column_name'] . '" readonly></td>
+                 <td><input type="checkbox" name="item_grid_' . $i . '"></td>
+                 <td><input type="checkbox" name="item_form_' . $i . '" checked="true"></td>
+                 <td><input type="text" style="border: 0px;" name="item_column_' . $i . '" value="' . $item['column_name'] . '" readonly></td>
                  <td>' . LabelGenerator::label($item['column_name'], $i) . '</td>
                  <td>' . WidgetGenerator::fieldWidget($item['column_name'], $item['data_type'], $item['length'], $i) . '</td> 
                  <td>' . IsNullableGenerator::getInfo($item['is_nullable'], $i) . '</td>
-                 <td>' . $databaseInfo  . '</td>
-                 <td><input type="hidden" name="item_length_'. $i .'" value="'. $item['length'] .'"></td>
+                 <td>' . $databaseInfo . '</td>
+                 <td><input type="hidden" name="item_length_' . $i . '" value="' . $item['length'] . '"></td>
               </tr>';
 
     }

@@ -142,7 +142,7 @@ class FormGenerator
 
                     $code .= str_repeat(' ', 8) .
                         "\$this->form->addQuickField('" .
-                        $item["label"] . " <font color=red><b>*</b></font>', \$" .
+                        $item["label"] . " <b style=\"color: red;\">*</b>', \$" .
                         $item["column"] . ", 50);" .
                         "\r\n";
 

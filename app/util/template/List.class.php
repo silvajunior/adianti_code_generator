@@ -19,12 +19,13 @@ class **LIST_CLASS_NAME** extends TPage
         parent::__construct();
 
         $this->form = new TForm('list_**TABLE_NAME**');
+        **MUDAR_O_NOME_DO_LABEL**
 
         $panel = new TPanelForm(900, 100);
 
         $this->form->add($panel);
 
-        $titulo = new TLabel('Listagens de **LIST_LABEL**');
+        $titulo = new TLabel('Listagem de **LIST_LABEL**');
         $titulo->setFontFace('Arial');
         $titulo->setFontColor('red');
         $titulo->setFontSize(12);

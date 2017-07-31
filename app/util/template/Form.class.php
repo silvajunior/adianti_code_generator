@@ -17,18 +17,21 @@ class **FORM_CLASS_NAME** extends TPage
         $this->form = new TQuickForm;
         $this->form->class = 'form_**TABLE_NAME**';
 
-        $this->form->setFormTitle('<font color="red" size="3" face="Arial"><b>Formul&aacute;rio de **FORM_LABEL**</b></font>');
+        $this->form->setFormTitle('<b style="color: red; font-size: 15px; font-family: Arial;">Formul&aacute;rio de **FORM_LABEL**</b>');
         **MUDAR_O_NOME_DO_LABEL**
 
 **FORM_FIELD_CREATION_LINE**
 **FIELD_SIZE_LINE**
 **FIELD_VALIDATION_LINE**
-        $titulo = new TLabel('<div style="position: floatval; width: 200px;"> <b>* Campos obrigat&oacute;rios</b></div>');
+        $titulo = new TLabel('* Campos obrigat&oacute;rios');
         $titulo->setFontFace('Arial');
         $titulo->setFontColor('red');
+        $titulo->setFontStyle('b');
         $titulo->setFontSize(10);
 
 **FORM_FIELD_ADD_LINE**
+        $this->form->addQuickField(null, $titulo, 150);
+
         $this->form->addQuickAction('Salvar', new TAction(array($this, 'onSave')), 'ico_save.png')->class = 'btn btn-info';
         $this->form->addQuickAction('Voltar', new TAction(array('**LIST_NAME**', 'onReload')), 'ico_datagrid.gif');
 
