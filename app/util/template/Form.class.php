@@ -14,7 +14,7 @@ class **FORM_CLASS_NAME** extends TPage
 
         parent::__construct();
 
-        $this->form = new TQuickForm;
+        $this->form = new TQuickForm('form_**TABLE_NAME**');
         $this->form->class = 'form_**TABLE_NAME**';
 
         $this->form->setFormTitle('<b style="color: red; font-size: 15px; font-family: Arial;">Formul&aacute;rio de **FORM_LABEL**</b>');
