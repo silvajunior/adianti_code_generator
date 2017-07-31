@@ -209,9 +209,9 @@ class **DETALHE_CLASS_NAME** extends TPage
     function show()
     {
 
-        parent::show();
-
         $this->onReload();
+
+        parent::show();
 
     }
 
