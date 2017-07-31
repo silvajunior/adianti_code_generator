@@ -30,7 +30,7 @@ class CodeGenerator
         $this->tableName = $_POST['tableName'];
         $this->type = $_POST['type'];
 
-        if (mkdir('../files/' . $this->tableName, 0777)) {
+        if (mkdir('../files/' . $this->tableName, 0777, true)) {
 
             Util::successMsg('> Folder ' . $this->tableName . ' created with success.');
 
