@@ -46,8 +46,8 @@ class CodeGenerator
 
                 } else {
 
-
                     Util::errorMsg('> Error creating ' . $this->recordName . '.');
+
                 }
 
             }

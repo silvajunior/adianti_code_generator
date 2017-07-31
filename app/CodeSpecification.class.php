@@ -19,6 +19,7 @@ class CodeSpecification
         if(isset($_GET['tableName'])) {
 
             $data = TableReader::getInfo($_GET['tableName']);
+            $className = LabelGenerator::className( $_GET['tableName'] );
 
             echo '<h3>FORM INFO</h3>
                   <form action="generator/CodeGenerator.class.php" method="POST">    
@@ -27,22 +28,22 @@ class CodeSpecification
                     
                     <input type="checkbox" name="record" >
                     Record <br>
-                    <input type="text" name="recordName" value="' . LabelGenerator::className( $_GET['tableName'] ) . 'Record">
+                    <input type="text" name="recordName" value="' . $className . 'Record">
                     
                     <br><br>
 
                     <input type="radio" name="type" value="list_form">
                     List/Form <br/>
                     
-                    <input type="text" name="listName" value="' . LabelGenerator::className( $_GET['tableName'] ) . 'List"> /
-                    <input type="text" name="formName" value="' . LabelGenerator::className( $_GET['tableName'] ) . 'Form">
+                    <input type="text" name="listName" value="' . $className . 'List"> /
+                    <input type="text" name="formName" value="' . $className . 'Form">
                     
                     <br><br>
                     
                     <input type="radio" name="type" value="detalhe">
                     Detalhe <br/>
                     
-                    <input type="text" name="detalheName" value="' . LabelGenerator::className( $_GET['tableName'] ) . 'Detalhe">
+                    <input type="text" name="detalheName" value="' . $className . 'Detalhe">
                     
                     <br><br>
                 
@@ -93,9 +94,11 @@ class CodeSpecification
     private function listItem( $item, $i )
     {
 
-        $databaseInfo = '<span style="color:blue;">' . $item['column_name'] . '</span><span style="color:green;"> ' . $item['data_type'];
+        $databaseInfo = '<span style="color:blue;">' . $item['column_name'] . '</span>';
+        $databaseInfo .= '<span style="color:green;"> ' . $item['data_type'];
         $databaseInfo .= $item['length'] > 0 ? '(' . $item['length'] . ')' : '';
-        $databaseInfo .= '</span>' . ($item['is_nullable'] == 'NO' ? ' <b>not null</b>' : '');
+        $databaseInfo .= '</span>';
+        $databaseInfo .= $item['is_nullable'] == 'NO' ? ' <b>not null</b>' : '';
 
         return '<tr>
                  <td><input type="checkbox" name="item_grid_'. $i .'"></td>

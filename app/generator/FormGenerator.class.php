@@ -107,7 +107,7 @@ class FormGenerator
 
         foreach ($items as $item) {
 
-            if ($item['widget'] == Adianti::ENTRY) {
+            if ($item['widget'] == Adianti::ENTRY && $item["length"] > 0) {
 
                 $code .= str_repeat(' ', 8) .
                     "\$" . $item["column"] .
