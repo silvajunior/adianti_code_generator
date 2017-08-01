@@ -12,35 +12,35 @@ class WidgetGenerator
 
         if ($columnName == 'id' || $columnName == 'dataalteracao' || $columnName == 'usuarioalteracao') {
 
-            $fieldType = Adianti::HIDDEN;
+            $fieldType = Adianti::HIDDEN_ADIANTI;
 
         } else if ($dataType == 'character varying') {
 
             if ($length < 150) {
 
-                $fieldType = Adianti::ENTRY;
+                $fieldType = Adianti::ENTRY_ADIANTI;
 
             } else {
 
-                $fieldType = Adianti::TEXT;
+                $fieldType = Adianti::TEXT_ADIANTI;
 
             }
 
-        } else if ($dataType == 'timestamp without time zone') {
+        } else if ($dataType == 'timestamp without time zone' || $dataType == 'date') {
 
-            $fieldType = Adianti::DATE;
+            $fieldType = Adianti::DATE_ADIANTI;
 
         } else if ($dataType == 'text') {
 
-            $fieldType = Adianti::TEXT;
+            $fieldType = Adianti::TEXT_ADIANTI;
 
         } else if ( strpos( $columnName, "_id" ) ) {
 
-            $fieldType = Adianti::COMBO;
+            $fieldType = Adianti::COMBO_ADIANTI;
 
         } else {
 
-            $fieldType = Adianti::ENTRY;
+            $fieldType = Adianti::ENTRY_ADIANTI;
 
         }
 

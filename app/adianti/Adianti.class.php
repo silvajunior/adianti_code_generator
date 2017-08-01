@@ -3,12 +3,12 @@
 abstract class Adianti
 {
 
-    const ENTRY = "TEntry";
-    const TEXT = "TText";
-    const DATE = "TDate";
-    const COMBO = "TCombo";
-    const HIDDEN = "THidden";
-    const RADIO_GROUP = "TRadioGroup";
+    const ENTRY_ADIANTI = "TEntry";
+    const TEXT_ADIANTI = "TText";
+    const DATE_ADIANTI = "TDate";
+    const COMBO_ADIANTI = "TCombo";
+    const HIDDEN_ADIANTI = "THidden";
+    const RADIO_GROUP_ADIANTI = "TRadioGroup";
 
     const WIDGETS_ARRAY = array(
         "TEntry" => "TEntry",
