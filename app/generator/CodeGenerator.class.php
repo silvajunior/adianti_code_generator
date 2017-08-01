@@ -9,6 +9,11 @@ require_once('DetalheGenerator.class.php');
 require_once('ListFormGenerator.class.php');
 require_once('../util/Util.class.php');
 
+
+include("../../content.php");
+
+headerContent("../../");
+
 class CodeGenerator
 {
 
@@ -85,7 +90,7 @@ class CodeGenerator
 
         }
 
-        echo '<form action="../../index.html"><input type="submit" value="Back to index"></form>';
+        echo '<form action="../../index.php"><input type="submit" value="Back to index"></form>';
 
     }
 
@@ -93,4 +98,5 @@ class CodeGenerator
 
 new CodeGenerator();
 
-?>
+
+footerContent("../../");

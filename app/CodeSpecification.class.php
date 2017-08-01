@@ -10,6 +10,10 @@ require_once('generator/LabelGenerator.class.php');
 require_once('generator/WidgetGenerator.class.php');
 require_once('generator/IsNullableGenerator.class.php');
 
+include("../content.php");
+
+headerContent("../");
+
 class CodeSpecification
 {
 
@@ -24,46 +28,61 @@ class CodeSpecification
 
                 $className = LabelGenerator::className($_GET['tableName']);
 
-                echo '<h3>FORM INFO</h3>
-                  <form action="generator/CodeGenerator.class.php" method="POST">    
+                echo '
+                <div class="panel-heading"><b>FORM INFO</b></div>
+                      <div class="panel-body">
+                  <form  class="navbar-form navbar" action="generator/CodeGenerator.class.php" method="POST">    
+                    
                     
                     <input type="hidden" name="tableName" value="' . $_GET['tableName'] . '">
                     
+                    <div class="form-group">
                     <input type="checkbox" name="record" >
-                    Record <br>
-                    <input type="text" name="recordName" value="' . $className . 'Record">
-                    
-                    <br><br>
+                        <label for="recordName">Record:</label>
+                        <br>
+                        <input id="recordName" type="text" name="recordName" class="form-control" placeholder="tb_usuario"   aria-describedby="basic-addon2">
+                    </div>
+                     <br>
+                    <div class="form-group">
+                        <input type="radio" name="type" class="form-control" value="list_form">
+                        <label for="type">List/Form:</label>
+                        <br>
+                        <input type="text" name="listName" class="form-control" value="' . $className . 'List"> /
+                        <input type="text" name="formName" class="form-control" value="' . $className . 'Form">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <input type="radio" name="type" value="detalhe">
+                        <label for="type">Detalhe:</label>
+                        <br>
+                        <input type="text" name="detalheName" class="form-control" value="' . $className . 'Detalhe">
+                    </div>
+                    <br>
+                    <br>
+                     <button type="submit" class="btn btn-success">Create</button>
+                    <br>
 
-                    <input type="radio" name="type" value="list_form">
-                    List/Form <br/>
-                    
-                    <input type="text" name="listName" value="' . $className . 'List"> /
-                    <input type="text" name="formName" value="' . $className . 'Form">
-                    
-                    <br><br>
-                    
-                    <input type="radio" name="type" value="detalhe">
-                    Detalhe <br/>
-                    
-                    <input type="text" name="detalheName" value="' . $className . 'Detalhe">
-                    
-                    <br><br>
-                
-                    <input type="submit" value="Create">
-                    
                     <h3>TABLE INFO</h3>' .
 
                     $this->createList($data)
 
-                    . '</form>';
+                    . '</form>
+                    </div>
+                </div>';
 
                 $this->createList($data);
 
             } else {
 
                 echo 'Table does not exists.';
-                echo '<form action="../index.html"><input type="submit" value="Back to index"></form>';
+                echo '
+                <div class="panel-heading"><b>FORM INFO</b></div>
+                      <div class="panel-body">
+                         <form  class="navbar-form navbar" action="../index.php">
+                            <button type="submit" class="btn btn-info">Back to index</button>
+                         </form>
+                       </div>
+                 </div>';
 
             }
 
@@ -74,17 +93,20 @@ class CodeSpecification
     private function createList($data)
     {
 
-        $table = '<table style="border-spacing: 10px; width: 100%;" >';
-        $table .= '<tr align="left">
-                      <th>Grid?</th>
-                      <th>Form?</th>
-                      <th>Column</th>
-                      <th>Label</th>
-                      <th>Adianti Widget</th> 
-                      <th>Is Nullable?</th>
-                      <th>Database Info</th>
-                    </tr>';
-
+        $table = '<div class="table-responsive ">          
+                    <table id="example" class="table table-hover" cellspacing="0" width="100%">';
+        $table .= '<thead>
+                                <tr align="left">
+                                    
+                                  <th>Grid?</th>
+                                  <th>Form?  All<input type="checkbox" class="check" id="checkAll" /></th>
+                                  <th>Column</th>
+                                  <th>Label</th>
+                                  <th>Adianti Widget</th> 
+                                  <th>Is Nullable?</th>
+                                  <th>Database Info</th>
+                                </tr>
+                              </thead>';
         $i = 0;
 
         foreach ($data as $item) {
@@ -95,7 +117,7 @@ class CodeSpecification
 
         }
 
-        $table .= '</table>';
+        $table .= '</table></div>';
 
         return $table;
 
@@ -103,23 +125,24 @@ class CodeSpecification
 
     private function listItem($item, $i)
     {
-
         $databaseInfo = '<span style="color:blue;">' . $item['column_name'] . '</span>';
         $databaseInfo .= '<span style="color:green;"> ' . $item['data_type'];
         $databaseInfo .= $item['length'] > 0 ? '(' . $item['length'] . ')' : '';
         $databaseInfo .= '</span>';
         $databaseInfo .= $item['is_nullable'] == 'NO' ? ' <b>not null</b>' : '';
 
-        return '<tr>
-                 <td><input type="checkbox" name="item_grid_' . $i . '"></td>
-                 <td><input type="checkbox" name="item_form_' . $i . '" checked="true"></td>
-                 <td><input type="text" style="border: 0px;" name="item_column_' . $i . '" value="' . $item['column_name'] . '" readonly></td>
-                 <td>' . LabelGenerator::label($item['column_name'], $i) . '</td>
-                 <td>' . WidgetGenerator::fieldWidget($item['column_name'], $item['data_type'], $item['length'], $i) . '</td> 
-                 <td>' . IsNullableGenerator::getInfo($item['is_nullable'], $i) . '</td>
-                 <td>' . $databaseInfo . '</td>
-                 <td><input type="hidden" name="item_length_' . $i . '" value="' . $item['length'] . '"></td>
-              </tr>';
+        return '<tbody>
+                    <tr>
+                     <td><input type="checkbox" name="item_grid_' . $i . '"></td>
+                     <td><input type="checkbox" class="check" name="item_form_' . $i . '" checked="true"></td>
+                     <td><input type="text" style="border: 0px;" name="item_column_' . $i . '" value="' . $item['column_name'] . '" readonly></td>
+                     <td>' . LabelGenerator::label($item['column_name'], $i) . '</td>
+                     <td>' . WidgetGenerator::fieldWidget($item['column_name'], $item['data_type'], $item['length'], $i) . '</td> 
+                     <td>' . IsNullableGenerator::getInfo($item['is_nullable'], $i) . '</td>
+                     <td>' . $databaseInfo . '</td>
+                     <td><input type="hidden" name="item_length_' . $i . '" value="' . $item['length'] . '"></td>
+                  </tr>
+              </tbody>';
 
     }
 
@@ -127,4 +150,12 @@ class CodeSpecification
 
 new CodeSpecification();
 
-?>
+footerContent("../");
+
+################# Check All itens form table #################
+       echo '<script>
+                    $("#checkAll").click(function () {
+                        $(".check").prop(\'checked\', $(this).prop(\'checked\'));
+                    });
+         </script>';
+################# Check All itens form table #################
