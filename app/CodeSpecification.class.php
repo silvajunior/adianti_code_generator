@@ -40,7 +40,7 @@ class CodeSpecification
                     <input type="checkbox" name="record" >
                         <label for="recordName">Record:</label>
                         <br>
-                        <input id="recordName" type="text" name="recordName" class="form-control" placeholder="tb_usuario"   aria-describedby="basic-addon2">
+                        <input id="recordName" type="text" name="recordName" value="' . $className . 'Record" class="form-control" placeholder="tb_usuario"   aria-describedby="basic-addon2">
                     </div>
                      <br>
                     <div class="form-group">
@@ -94,12 +94,13 @@ class CodeSpecification
     {
 
         $table = '<div class="table-responsive ">          
+                    <input type="checkbox" class="check" id="checkAll" checked="checked"/> Select all Form
                     <table id="example" class="table table-hover" cellspacing="0" width="100%">';
         $table .= '<thead>
                                 <tr align="left">
                                     
                                   <th>Grid?</th>
-                                  <th>Form?  All<input type="checkbox" class="check" id="checkAll" /></th>
+                                  <th>Form?</th>
                                   <th>Column</th>
                                   <th>Label</th>
                                   <th>Adianti Widget</th> 
@@ -153,7 +154,7 @@ new CodeSpecification();
 footerContent("../");
 
 ################# Check All itens form table #################
-       echo '<script>
+echo '<script>
                     $("#checkAll").click(function () {
                         $(".check").prop(\'checked\', $(this).prop(\'checked\'));
                     });
