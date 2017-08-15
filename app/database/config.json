@@ -1,8 +1,9 @@
 {
+  "type": "",
   "host": "",
   "port": "",
-  "database": "",
+  "name": "",
   "user": "",
-  "password": "",
-  "db_config_file": ""
+  "pass": "",
+  "ini_file": ""
 }

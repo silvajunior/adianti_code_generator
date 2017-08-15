@@ -11,27 +11,47 @@ class TableReader
 
     public static function getInfo( $tableName )
     {
+        $config = LoadConfig::get();
+        $type = $config->getType();
+
+        $schema   = "information_schema.columns";
+        $table    = "table_name";
+        $column   = "column_name";
+        $datatype = "data_type";
+        $nullable = "is_nullable";
+        $length   = "character_maximum_length";
+
+        if ( $type == "mysql" ) {
+
+            $schema   = strtoupper( $schema );
+            $table    = strtoupper( $table );
+            $column   = strtoupper( $column );
+            $datatype = strtoupper( $datatype );
+            $nullable = strtoupper( $nullable );
+            $length   = strtoupper( $length );
+
+        }
 
         try {
 
             $pdo = Connection::get()->connect();
 
-            $stmt = $pdo->query("SELECT * FROM information_schema.columns WHERE table_name = '" . $tableName . "';");
+            $stmt = $pdo->query( "SELECT * FROM {$schema} WHERE {$table} = '{$tableName}';" );
 
-            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            while ( $row = $stmt->fetch( PDO::FETCH_ASSOC ) ) {
 
                 $data[] = [
-                    'column_name' => $row['column_name'],
-                    'data_type' => $row['data_type'],
-                    'is_nullable' => $row['is_nullable'],
-                    'length' => $row['character_maximum_length']
+                    "column_name" => $row[ $column ],
+                    "data_type"   => $row[ $datatype ],
+                    "is_nullable" => $row[ $nullable ],
+                    "length"      => $row[ $length ]
                 ];
 
             }
 
             return $data;
 
-        } catch (\PDOException $e) {
+        } catch ( PDOException $e ) {
 
             echo $e->getMessage();
 

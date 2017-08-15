@@ -76,9 +76,9 @@ class Util
     {
 
         $file = file_get_contents('../database/config.json');
-        $configJson = json_decode($file, true);
+        $config = json_decode($file, true);
 
-        return $configJson['db_config_file'];
+        return $config['ini_file'];
 
     }
 

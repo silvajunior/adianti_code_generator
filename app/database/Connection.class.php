@@ -4,57 +4,61 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+include_once('util/LoadConfig.class.php');
+
 class Connection
 {
-
     private static $conn;
 
     public function connect()
     {
+        $config = LoadConfig::get();
+        $type = $config->getType();
+        $host = $config->getHost();
+        $port = $config->getPort();
+        $name = $config->getName();
+        $user = $config->getUser();
+        $pass = $config->getPass();
 
-        $file = file_get_contents(__DIR__ . '/config.json');
-        $configJson = json_decode($file, true);
+        switch ( $type ) {
 
-        $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
-            $configJson['host'],
-            $configJson['port'],
-            $configJson['database'],
-            $configJson['user'],
-            $configJson['password']);
+            case "pgsql":
 
-        $pdo = new \PDO($conStr);
-        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                $port = $port ? $port : "5432";
+                $pdo = new PDO(
+                    "{$type}:host={$host};port={$port};dbname={$name};", $user, $pass
+                );
+
+                break;
+
+            case "mysql":
+
+                $port = $port ? $port : "3306";
+                $pdo = new PDO(
+                    "{$type}:host={$host};port={$port};dbname={$name};", $user, $pass,
+                    [ PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8" ]
+                );
+
+                break;
+        }
+
+        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
         return $pdo;
-
     }
 
     public static function get()
     {
-
         if (null === static::$conn) {
             static::$conn = new static();
         }
 
         return static::$conn;
-
     }
 
-    protected function __construct()
-    {
+    protected function __construct() { }
 
-    }
+    private function __clone() { }
 
-    private function __clone()
-    {
-
-    }
-
-    private function __wakeup()
-    {
-
-    }
-
+    private function __wakeup() { }
 }
-
-?>
