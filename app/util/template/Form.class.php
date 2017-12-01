@@ -14,26 +14,22 @@ class **FORM_CLASS_NAME** extends TPage
 
         parent::__construct();
 
-        $this->form = new TQuickForm('form_**TABLE_NAME**');
+        $this->form = new TQuickForm();
+
+
+        $this->form = new BootstrapFormBuilder('form_**TABLE_NAME**');
+        $this->form->setFormTitle( '**FORM_LABEL**' );
         $this->form->class = 'form_**TABLE_NAME**';
 
-        $this->form->setFormTitle('<b style="color: red; font-size: 15px; font-family: Arial;">Formul&aacute;rio de **FORM_LABEL**</b>');
-        **MUDAR_O_NOME_DO_LABEL**
-
-**FORM_FIELD_CREATION_LINE**
+    **FORM_FIELD_CREATION_LINE**
 **FIELD_SIZE_LINE**
 **FIELD_VALIDATION_LINE**
-        $titulo = new TLabel('* Campos obrigat&oacute;rios');
-        $titulo->setFontFace('Arial');
-        $titulo->setFontColor('red');
-        $titulo->setFontStyle('b');
-        $titulo->setFontSize(10);
 
 **FORM_FIELD_ADD_LINE**
-        $this->form->addQuickField(null, $titulo, 150);
+$this->form->addFields([new TLabel('')], [TElement::tag('label', '<i>* Campos obrigatórios</i>' ) ]);
 
-        $this->form->addQuickAction('Salvar', new TAction(array($this, 'onSave')), 'ico_save.png')->class = 'btn btn-info';
-        $this->form->addQuickAction('Voltar', new TAction(array('**LIST_NAME**', 'onReload')), 'ico_datagrid.gif');
+        $this->form->addAction('Salvar', new TAction(array($this, 'onSave')), 'fa:save')->class = 'btn btn-sm btn-primary';
+        $this->form->addAction('Voltar', new TAction(array('**LIST_NAME**', 'onReload')), 'fa:arrow-left')->class = 'btn btn-sm btn-primary';
 
         parent::add($this->form);
 
@@ -44,21 +40,22 @@ class **FORM_CLASS_NAME** extends TPage
 
         try {
 
-            $this->form->validate();
-
             TTransaction::open('**DB_CONFIG_FILE**');
+
+            $this->form->validate();
 
             $cadastro = $this->form->getData('**RECORD_NAME**');
 
-            $cadastro->usuarioalteracao = $_SESSION['usuario'];
-            $cadastro->dataalteracao = date("d/m/Y H:i:s");
+            //$cadastro->usuarioalteracao = $_SESSION['usuario'];
+            //$cadastro->dataalteracao = date("d/m/Y H:i:s");
 
             $cadastro->store();
 
             TTransaction::close();
 
-            new TMessage("info", "Registro salvo com sucesso!");
-            TApplication::gotoPage('**LIST_NAME**', 'onReload');
+            $action_ok = new TAction( [ '**LIST_NAME**', "onReload" ] );
+
+            new TMessage( "info", "Registro salvo com sucesso!", $action_ok );
 
         } catch (Exception $e) {
 

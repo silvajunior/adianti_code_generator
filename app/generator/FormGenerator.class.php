@@ -132,8 +132,8 @@ class FormGenerator
             if ($item['widget'] == 'THidden') {
 
                 $code .= str_repeat(' ', 8) .
-                    "\$this->form->addQuickField('', \$" .
-                    $item["column"] . ", 0);" .
+                    "\$this->form->addFields([\$" .
+                    $item["column"] . "]);" .
                     "\r\n";
 
             } else {
@@ -141,17 +141,17 @@ class FormGenerator
                 if ($item['is_nullable'] == 'NO') {
 
                     $code .= str_repeat(' ', 8) .
-                        "\$this->form->addQuickField('" .
-                        $item["label"] . " <b style=\"color: red;\">*</b>', \$" .
-                        $item["column"] . ", 50);" .
+                        "\$this->form->addFields([new TLabel('" .
+                        $item["label"] . " <i>*</i>')], [\$" .
+                        $item["column"] . "]);" .
                         "\r\n";
 
                 } else {
 
                     $code .= str_repeat(' ', 8) .
-                        "\$this->form->addQuickField('" .
-                        $item["label"] . "', \$" .
-                        $item["column"] . ", 50);" .
+                        "\$this->form->addFields([new TLabel('" .
+                        $item["label"] . "')], [\$" .
+                        $item["column"] . "]);" .
                         "\r\n";
 
                 }
