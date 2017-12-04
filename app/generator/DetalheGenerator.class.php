@@ -50,7 +50,7 @@ class DetalheGenerator
     private function writeDetalhe()
     {
 
-        $codeWritte = false;
+        $codeWritten = false;
 
         $code = file_get_contents($this->filePath);
 
@@ -70,9 +70,9 @@ class DetalheGenerator
         $code = str_replace("**FORM_FIELD_ADD_LINE**", FormGenerator::createAddFormFields($this->formData), $code);
 
         if (file_put_contents($this->filePath, $code))
-            $codeWritte = true;
+            $codeWritten = true;
 
-        return $codeWritte;
+        return $codeWritten;
 
     }
 

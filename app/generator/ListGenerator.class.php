@@ -54,7 +54,7 @@ class ListGenerator
     private function writeList()
     {
 
-        $codeWritte = false;
+        $codeWritten = false;
 
         $code = file_get_contents($this->filePath);
 
@@ -73,9 +73,9 @@ class ListGenerator
         $code = str_replace("**DATA_GRID_ITEMS_LINE**", $data_items, $code);
 
         if (file_put_contents($this->filePath, $code))
-            $codeWritte = true;
+            $codeWritten = true;
 
-        return $codeWritte;
+        return $codeWritten;
 
     }
 

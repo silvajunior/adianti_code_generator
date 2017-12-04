@@ -21,12 +21,12 @@ class **FORM_CLASS_NAME** extends TPage
         $this->form->setFormTitle( '**FORM_LABEL**' );
         $this->form->class = 'form_**TABLE_NAME**';
 
-    **FORM_FIELD_CREATION_LINE**
+**FORM_FIELD_CREATION_LINE**
 **FIELD_SIZE_LINE**
 **FIELD_VALIDATION_LINE**
 
 **FORM_FIELD_ADD_LINE**
-$this->form->addFields([new TLabel('')], [TElement::tag('label', '<i>* Campos obrigatórios</i>' ) ]);
+        $this->form->addFields([new TLabel('')], [TElement::tag('label', '<i>* Campos obrigatórios</i>' ) ]);
 
         $this->form->addAction('Salvar', new TAction(array($this, 'onSave')), 'fa:save')->class = 'btn btn-sm btn-primary';
         $this->form->addAction('Voltar', new TAction(array('**LIST_NAME**', 'onReload')), 'fa:arrow-left')->class = 'btn btn-sm btn-primary';
@@ -46,8 +46,8 @@ $this->form->addFields([new TLabel('')], [TElement::tag('label', '<i>* Campos ob
 
             $cadastro = $this->form->getData('**RECORD_NAME**');
 
-            //$cadastro->usuarioalteracao = $_SESSION['usuario'];
-            //$cadastro->dataalteracao = date("d/m/Y H:i:s");
+            $cadastro->usuarioalteracao = $_SESSION['usuario'];
+            $cadastro->dataalteracao = date("d/m/Y H:i:s");
 
             $cadastro->store();
 

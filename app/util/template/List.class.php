@@ -11,173 +11,168 @@ class **LIST_CLASS_NAME** extends TPage
     private $datagrid;
 
     public function __construct()
-{
+    {
 
-    parent::__construct();
+        parent::__construct();
 
-    $this->form = new BootstrapFormWrapper(new TQuickForm('list_**TABLE_NAME**'));
+        $this->form = new BootstrapFormWrapper(new TQuickForm('list_**TABLE_NAME**'));
 
-    $opcao = new TCombo('opcao');
-    $nome  = new TEntry('nome');
+        $opcao = new TCombo('opcao');
+        $nome  = new TEntry('nome');
 
-    $items= array();
-    $items['**SEARCH_ITEM_VALUE**'] = '**SEARCH_ITEM_LABEL**';
+        $items= array();
+        $items['**SEARCH_ITEM_VALUE**'] = '**SEARCH_ITEM_LABEL**';
 
-    $opcao->addItems($items);
-    $opcao->setValue('**SEARCH_ITEM_VALUE**');
+        $opcao->addItems($items);
+        $opcao->setValue('**SEARCH_ITEM_VALUE**');
 
-    $this->form->addQuickField( 'Selecione o campo', $opcao, '80%' );
-    $this->form->addQuickField( 'Buscar', $nome, '80%' );
+        $this->form->addQuickField( 'Selecione o campo', $opcao, '80%' );
+        $this->form->addQuickField( 'Buscar', $nome, '80%' );
 
-    $find_button = $this->form->addQuickAction( 'Buscar', new TAction(array($this, 'onSearch')),
-        'fa:search');
-    $find_button->class = 'btn btn-sm btn-primary';
+        $find_button = $this->form->addQuickAction( 'Buscar', new TAction(array($this, 'onSearch')), 'fa:search');
+        $find_button->class = 'btn btn-sm btn-primary';
 
-    $new_button = $this->form->addQuickAction( 'Novo' , new TAction(array('**FORM_NAME**', 'onEdit')),
-        'fa:file');
-    $new_button->class = 'btn btn-sm btn-primary';
+        $new_button = $this->form->addQuickAction( 'Novo' , new TAction(array('**FORM_NAME**', 'onEdit')), 'fa:file');
+        $new_button->class = 'btn btn-sm btn-primary';
 
+        //DATAGRID ------------------------------------------------------------------------------------------
+        $this->datagrid = new TDatagridTables();
 
-    //DATAGRID ------------------------------------------------------------------------------------------
-    $this->datagrid = new TDatagridTables;
+        **DATA_GRID_ITEMS_LINE**
+        $actionEdit = new TDataGridAction(array('**FORM_NAME**', 'onEdit'));
+        $actionEdit->setLabel('Editar');
+        $actionEdit->setImage( "fa:pencil-square-o blue fa-lg" );
+        $actionEdit->setField('id');
 
-    **DATA_GRID_ITEMS_LINE**
-$actionEdit = new TDataGridAction(array('**FORM_NAME**', 'onEdit'));
-    $actionEdit->setLabel('Editar');
-    $actionEdit->setImage( "fa:pencil-square-o blue fa-lg" );
-    $actionEdit->setField('id');
+        $actionDelete = new TDataGridAction(array($this, 'onDelete'));
+        $actionDelete->setLabel('Deletar');
+        $actionDelete->setImage( "fa:trash-o red fa-lg" );
+        $actionDelete->setField('id');
 
-    $actionDelete = new TDataGridAction(array($this, 'onDelete'));
-    $actionDelete->setLabel('Deletar');
-    $actionDelete->setImage( "fa:trash-o red fa-lg" );
-    $actionDelete->setField('id');
+        $this->datagrid->addAction($actionEdit);
+        $this->datagrid->addAction($actionDelete);
 
-    $this->datagrid->addAction($actionEdit);
-    $this->datagrid->addAction($actionDelete);
+        $this->datagrid->createModel();
 
-    $this->datagrid->createModel();
+        //FIM DATAGRID -----------------------------------------------------------------------------------------
 
-    //FIM DATAGRID -----------------------------------------------------------------------------------------
+        $container = new TVBox();
+        $container->style = "width: 100%";
+        $container->add( TPanelGroup::pack( 'Listagem de **LIST_LABEL**', $this->form ) );
+        $container->add( TPanelGroup::pack( NULL, $this->datagrid ) );
 
-    $container = new TVBox();
-    $container->style = "width: 100%";
-    $container->add( TPanelGroup::pack( 'Listagem de **LIST_LABEL**', $this->form ) );
-    $container->add( TPanelGroup::pack( NULL, $this->datagrid ) );
+        parent::add( $container );
 
-    parent::add( $container );
-
-}
+    }
 
     public function onReload( $param = NULL )
-{
-    try {
+    {
 
-        TTransaction::open('**DB_CONFIG_FILE**');
+        try {
 
-        $repository = new TRepository('**RECORD_NAME**');
+            TTransaction::open('**DB_CONFIG_FILE**');
 
-        $limit = 10;
+            $repository = new TRepository('**RECORD_NAME**');
 
-        $criteria = new TCriteria();
-        $criteria->setProperties( $param );
-        //$criteria->setProperty( "limit", $limit );
+            $criteria = new TCriteria();
 
-        if (TSession::getValue('filter_**RECORD_NAME**')) {
-            $filters = TSession::getValue('filter_**RECORD_NAME**');
-            foreach ($filters as $filter) {
-                $criteria->add($filter);
+            if (TSession::getValue('filter_**RECORD_NAME**')) {
+                $filters = TSession::getValue('filter_**RECORD_NAME**');
+                foreach ($filters as $filter) {
+                    $criteria->add($filter);
+                }
             }
-        }
 
-        $objects = $repository->load( $criteria, FALSE );
+            $objects = $repository->load( $criteria, FALSE );
 
-        $this->datagrid->clear();
+            $this->datagrid->clear();
 
-        if ( !empty( $objects ) ) {
-            foreach ( $objects as $object ) {
-                $this->datagrid->addItem( $object );
+            if ( !empty( $objects ) ) {
+                foreach ( $objects as $object ) {
+                    $this->datagrid->addItem( $object );
+                }
             }
+
+            $criteria->resetProperties();
+
+            TTransaction::close();
+
+        } catch ( Exception $ex ) {
+
+            TTransaction::rollback();
+
+            new TMessage( "error",  $ex->getMessage()  );
+
         }
-
-        $criteria->resetProperties();
-
-        TTransaction::close();
-
-    } catch ( Exception $ex ) {
-
-        TTransaction::rollback();
-
-        new TMessage( "error",  $ex->getMessage()  );
 
     }
-
-}
 
     public function onSearch()
-{
+    {
 
-    $data = $this->form->getData();
+        $data = $this->form->getData();
 
-    try {
+        try {
 
-        if( !empty( $data->opcao ) && !empty( $data->nome ) ) {
+            if( !empty( $data->opcao ) && !empty( $data->nome ) ) {
 
-            $filter = [];
+                $filter = [];
 
-            switch ( $data->opcao ) {
+                switch ( $data->opcao ) {
 
-                case "nome":
-                    $filter[] = new TFilter( $data->opcao, "LIKE", "%" . $data->nome . "%" );
-                    break;
+                    case "nome":
+                        $filter[] = new TFilter( $data->opcao, "LIKE", "%" . $data->nome . "%" );
+                        break;
 
-                default:
-                    $filter[] = new TFilter( $data->opcao, "LIKE", $data->nome . "%" );
-                    break;
+                    default:
+                        $filter[] = new TFilter( $data->opcao, "LIKE", $data->nome . "%" );
+                        break;
+
+                }
+
+                TSession::setValue('filter_**RECORD_NAME**', $filter);
+
+                $this->form->setData( $data );
+
+                $this->onReload();
+
+            } else {
+
+                TSession::setValue('filter_**RECORD_NAME**', '');
+
+                $this->onReload();
+
+                $this->form->setData( $data );
+
+                new TMessage( "error", "Selecione uma opção e informe os dados da busca corretamente!" );
 
             }
 
-            TSession::setValue('filter_**RECORD_NAME**', $filter);
+        } catch ( Exception $ex ) {
+
+            TTransaction::rollback();
 
             $this->form->setData( $data );
 
-            $this->onReload();
-
-        } else {
-
-            TSession::setValue('filter_**RECORD_NAME**', '');
-
-            $this->onReload();
-
-            $this->form->setData( $data );
-
-            new TMessage( "error", "Selecione uma opcao e informe os dados da busca corretamente!" );
+            new TMessage( "error",  $ex->getMessage() .'.' );
 
         }
 
-    } catch ( Exception $ex ) {
-
-        TTransaction::rollback();
-
-        $this->form->setData( $data );
-
-        new TMessage( "error",  $ex->getMessage() .'.' );
-
     }
-}
 
     public function onDelete( $param = NULL )
-{
-    if( isset( $param[ "key" ] ) ) {
+    {
+        if( isset( $param[ "key" ] ) ) {
 
-        $action_ok = new TAction( [ $this, "Delete" ] );
-        $action_cancel = new TAction( [ $this, "onReload" ] );
+            $action_ok = new TAction( [ $this, "Delete" ] );
+            $action_cancel = new TAction( [ $this, "onReload" ] );
 
-        $action_ok->setParameter( "key", $param[ "key" ] );
+            $action_ok->setParameter( "key", $param[ "key" ] );
 
-        new TQuestion( "Deseja remover o registro?", $action_ok, $action_cancel,  "Deletar");
+            new TQuestion( "Deseja remover o registro?", $action_ok, $action_cancel,  "Deletar");
 
+        }
     }
-}
 
     function Delete( $param = NULL )
     {
@@ -201,16 +196,18 @@ $actionEdit = new TDataGridAction(array('**FORM_NAME**', 'onEdit'));
 
             new TMessage( "error",  $ex->getMessage() .'.' );
 
-
         }
+
     }
 
     public function show()
-{
-    $this->onReload();
+    {
 
-    parent::show();
-}
+        $this->onReload();
+
+        parent::show();
+
+    }
 
 }
 

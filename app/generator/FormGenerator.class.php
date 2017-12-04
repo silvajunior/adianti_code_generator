@@ -57,7 +57,7 @@ class FormGenerator
     public function writeForm()
     {
 
-        $codeWritte = false;
+        $codeWritten = false;
 
         $code = file_get_contents($this->filePath);
 
@@ -75,9 +75,9 @@ class FormGenerator
         $code = str_replace("**FORM_FIELD_ADD_LINE**", FormGenerator::createAddFormFields($this->formItems), $code);
 
         if (file_put_contents($this->filePath, $code))
-            $codeWritte = true;
+            $codeWritten = true;
 
-        return $codeWritte;
+        return $codeWritten;
 
     }
 

@@ -4,8 +4,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_erros', 1);
 error_reporting(E_ALL);
 
-use Adianti\Widget\Datagrid\TDatagridTables;
-
 class **DETALHE_CLASS_NAME** extends TPage
 {
 
@@ -17,41 +15,40 @@ class **DETALHE_CLASS_NAME** extends TPage
 
         parent::__construct();
 
-        $this->form = new TQuickForm('detalhe_**TABLE_NAME**');
+        $this->form = new BootstrapFormWrapper(new TQuickForm('detalhe_**TABLE_NAME**'));
         $this->form->class = 'detalhe_**TABLE_NAME**';
-        $this->form->setFormTitle('<b style="color: red; font-size: 15px; font-family: Arial;">Detalhe **DETALHE_LABEL**</b>');
 
 **FORM_FIELD_CREATION_LINE**
 **FIELD_SIZE_LINE**
 **FIELD_VALIDATION_LINE**
-        $titulo = new TLabel('* Campos obrigat&oacute;rios');
-        $titulo->setFontFace('Arial');
-        $titulo->setFontColor('red');
-        $titulo->setFontStyle('b');
-        $titulo->setFontSize(10);
 
         $action1 = new TAction(array($this, 'onSave'));
-        $action1->setParameter('fk', '' . filter_input(INPUT_GET, 'fk') . '');
         $action1->setParameter('key', '' . filter_input(INPUT_GET, 'key') . '');
+        $action1->setParameter('fk', '' . filter_input(INPUT_GET, 'fk') . '');
 
 **FORM_FIELD_ADD_LINE**
-        $this->form->addQuickField(null, $titulo, 150);
+        $this->form->addFields([new TLabel('')], [TElement::tag('label', '<i>* Campos obrigatórios</i>' ) ]);
 
-        $this->form->addQuickAction('Salvar', $action1, 'ico_save.png')->class = 'btn btn-info';
-        $this->form->addQuickAction('Voltar', new TAction(array(**CLASSE_PAI_NOME**, 'onReload')), 'ico_datagrid.gif');
+        $save_button = $this->form->addQuickAction('Salvar', $action1, 'fa:save');
+        $save_button->class = 'btn btn-sm btn-primary';
 
-        $this->datagrid = new TDatagridTables;
+        $back_button = $this->form->addQuickAction('Voltar', new TAction(array(**CLASSE_PAI_NOME**, 'onReload')), 'fa:arrow-left');
+        $back_button->class = 'btn btn-sm btn-primary';
+
+        $this->datagrid = new TDatagridTables();
 
 **DATA_GRID_ITEMS_LINE**
         $actionEdit = new TDataGridAction(array($this, 'onEdit'));
+        $actionEdit->setButtonClass("btn btn-default");
         $actionEdit->setLabel('Editar');
-        $actionEdit->setImage('ico_edit.png');
+        $actionEdit->setImage("fa:pencil-square-o blue fa-lg");
         $actionEdit->setField('id');
         $actionEdit->setFk('**FK_NAME**');
 
         $actionDelete = new TDataGridAction(array($this, 'onDelete'));
+        $actionDelete->setButtonClass("btn btn-default");
         $actionDelete->setLabel('Deletar');
-        $actionDelete->setImage('ico_delete.png');
+        $actionDelete->setImage("fa:trash-o red fa-lg");
         $actionDelete->setField('id');
         $actionDelete->setFk('**FK_NAME**');
 
@@ -60,11 +57,13 @@ class **DETALHE_CLASS_NAME** extends TPage
 
         $this->datagrid->createModel();
 
-        $panel = new TPanelForm(700, 500);
-        $panel->put($this->form, 0, 0);
-        $panel->put($this->datagrid, 150, 165);
+        $container = new TVBox();
+        $container->style = "width: 100%";
 
-        parent::add($panel);
+        $container->add(TPanelGroup::pack('Detalhe **DETALHE_LABEL**', $this->form));
+        $container->add(TPanelGroup::pack(NULL, $this->datagrid));
+
+        parent::add($container);
 
     }
 
@@ -79,15 +78,15 @@ class **DETALHE_CLASS_NAME** extends TPage
 
         $criteria->add(new TFilter('**FK_NAME**', '=', filter_input(INPUT_GET, 'fk')));
 
-        $cadastros = $repository->load($criteria);
+        $objects = $repository->load($criteria, FALSE);
 
         $this->datagrid->clear();
 
-        if ($cadastros) {
+        if (!empty($objects)) {
 
-            foreach ($cadastros as $cadastro) {
+            foreach ($objects as $object) {
 
-                $this->datagrid->addItem($cadastro);
+                $this->datagrid->addItem($object);
 
             }
 
@@ -99,38 +98,50 @@ class **DETALHE_CLASS_NAME** extends TPage
 
     }
 
-    function onDelete($param)
+    function onDelete($param = NULL)
     {
 
-        $action = new TAction(array($this, 'Delete'));
+        if (isset($param["key"])) {
 
-        $action->setParameter('key', $param['key']);
-        $action->setParameter('fk', $param['fk']);
+            $param = [
+                "key" => $param[ "key" ],
+                "fk"  => $param[ "fk" ]
+            ];
 
-        new TQuestion('Deseja realmente excluir o registro?', $action);
+            $action_ok = new TAction([$this, "Delete"]);
+            $action_cancel = new TAction([$this, "onReload"]);
+
+            $action_ok->setParameters( $param );
+            $action_cancel->setParameters( $param );
+
+            $this->onReload( $param );
+
+            new TQuestion("Deseja remover o registro?", $action_ok, $action_cancel);
+        }
 
     }
 
-    function Delete($param)
+    function Delete($param = NULL)
     {
 
         $key = $param['key'];
 
-        TTransaction::open('**DB_CONFIG_FILE**');
-
-        $obj = new **RECORD_NAME**($key);
-
         try {
 
-            $obj->delete();
+            TTransaction::open('**DB_CONFIG_FILE**');
+
+            $object = new **RECORD_NAME**($key);
+            $object->delete();
+
+            $this->onReload( $param );
 
             new TMessage("info", "Registro deletado com sucesso!");
 
             TTransaction::close();
 
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
 
-            new TMessage('error', $e->getMessage());
+            new TMessage('error', $ex->getMessage());
 
             TTransaction::rollback();
 
@@ -141,43 +152,39 @@ class **DETALHE_CLASS_NAME** extends TPage
     }
 
 
-    function onSave()
+    function onSave($param = NULL)
     {
 
         try {
 
             TTransaction::open('**DB_CONFIG_FILE**');
 
-            $cadastro = $this->form->getData('**RECORD_NAME**');
-
-            $cadastro->usuarioalteracao = $_SESSION['usuario'];
-            $cadastro->dataalteracao = date("d/m/Y H:i:s");
-
             $this->form->validate();
 
-            $cadastro->store();
+            $object = $this->form->getData('**RECORD_NAME**');
+
+            $object->usuarioalteracao = $_SESSION['usuario'];
+            $object->dataalteracao = date("d/m/Y H:i:s");
+
+            $object->store();
 
             TTransaction::close();
 
-            $param = array();
-            $param ['fk'] = $cadastro->**FK_NAME**;
+            $action = new TAction( [ "**DETALHE_CLASS_NAME**", "onReload" ] );
+            $action->setParameter( "fk", $param[ "fk" ] );
 
-            new TMessage("info", "Registro salvo com sucesso!");
+            new TMessage("info", "Registro salvo com sucesso!", $action);
 
-            TApplication::gotoPage('**DETALHE_CLASS_NAME**', 'onReload', $param);
+        } catch (Exception $ex) {
 
-        } catch (Exception $e) {
-
-            new TMessage('error', $e->getMessage());
+            new TMessage('error', $ex->getMessage());
             TTransaction::rollback();
-
-            $this->form->setData($cadastro);
 
         }
 
     }
 
-    function onEdit($param)
+    function onEdit($param = NULL)
     {
 
         try {
@@ -196,9 +203,9 @@ class **DETALHE_CLASS_NAME** extends TPage
 
             }
 
-        } catch (Exception $e) {
+        } catch (Exception $ex) {
 
-            new TMessage('error', '<b>Error</b> ' . $e->getMessage());
+            new TMessage("Error", "Ocorreu um erro ao tentar carregar o registro para edição!<br><br>" . $ex->getMessage());
 
             TTransaction::rollback();
 
