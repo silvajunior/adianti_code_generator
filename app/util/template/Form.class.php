@@ -14,9 +14,6 @@ class **FORM_CLASS_NAME** extends TPage
 
         parent::__construct();
 
-        $this->form = new TQuickForm();
-
-
         $this->form = new BootstrapFormBuilder('form_**TABLE_NAME**');
         $this->form->setFormTitle( '**FORM_LABEL**' );
         $this->form->class = 'form_**TABLE_NAME**';
@@ -35,7 +32,7 @@ class **FORM_CLASS_NAME** extends TPage
 
     }
 
-    function onSave()
+    function onSave($param = NULL)
     {
 
         try {
@@ -44,12 +41,12 @@ class **FORM_CLASS_NAME** extends TPage
 
             $this->form->validate();
 
-            $cadastro = $this->form->getData('**RECORD_NAME**');
+            $object = $this->form->getData('**RECORD_NAME**');
 
-            $cadastro->usuarioalteracao = $_SESSION['usuario'];
-            $cadastro->dataalteracao = date("d/m/Y H:i:s");
+            $object->usuarioalteracao = $_SESSION['usuario'];
+            $object->dataalteracao = date("d/m/Y H:i:s");
 
-            $cadastro->store();
+            $object->store();
 
             TTransaction::close();
 
@@ -67,7 +64,7 @@ class **FORM_CLASS_NAME** extends TPage
 
     }
 
-    function onEdit($param)
+    function onEdit($param = NULL)
     {
 
         try {

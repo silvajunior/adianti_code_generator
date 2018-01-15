@@ -15,7 +15,7 @@ class **DETALHE_CLASS_NAME** extends TPage
 
         parent::__construct();
 
-        $this->form = new BootstrapFormWrapper(new TQuickForm('detalhe_**TABLE_NAME**'));
+        $this->form = new BootstrapFormBuilder('detalhe_**TABLE_NAME**');
         $this->form->class = 'detalhe_**TABLE_NAME**';
 
 **FORM_FIELD_CREATION_LINE**
@@ -29,11 +29,8 @@ class **DETALHE_CLASS_NAME** extends TPage
 **FORM_FIELD_ADD_LINE**
         $this->form->addFields([new TLabel('')], [TElement::tag('label', '<i>* Campos obrigatórios</i>' ) ]);
 
-        $save_button = $this->form->addQuickAction('Salvar', $action1, 'fa:save');
-        $save_button->class = 'btn btn-sm btn-primary';
-
-        $back_button = $this->form->addQuickAction('Voltar', new TAction(array(**CLASSE_PAI_NOME**, 'onReload')), 'fa:arrow-left');
-        $back_button->class = 'btn btn-sm btn-primary';
+        $this->form->addAction('Salvar', $action1, 'fa:save')->class = 'btn btn-sm btn-primary';
+        $this->form->addAction('Voltar', new TAction(array(**CLASSE_PAI_NOME**, 'onReload')), 'fa:arrow-left')->class = 'btn btn-sm btn-primary';
 
         $this->datagrid = new TDatagridTables();
 
