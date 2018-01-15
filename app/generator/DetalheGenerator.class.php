@@ -4,6 +4,8 @@ class DetalheGenerator
 {
 
     private $detalheName;
+    private $detalheTitle;
+    private $detalheFather;
 
     private $recordName;
     private $tableName;
@@ -13,10 +15,12 @@ class DetalheGenerator
 
     private $filePath;
 
-    function __construct($detalheName, $recordName, $tableName, $itemsPost)
+    function __construct($detalheName, $detalheTitle, $recordName, $tableName, $detalheFather, $itemsPost)
     {
 
         $this->detalheName = $detalheName;
+        $this->detalheTitle = $detalheTitle;
+        $this->detalheFather = $detalheFather;
 
         $this->recordName = $recordName;
         $this->tableName = $tableName;
@@ -55,6 +59,8 @@ class DetalheGenerator
         $code = file_get_contents($this->filePath);
 
         $code = str_replace( "**DETALHE_CLASS_NAME**", $this->detalheName, $code );
+        $code = str_replace( "**DETALHE_LABEL**", $this->detalheTitle, $code );
+        $code = str_replace( "**CLASSE_PAI_NOME**", $this->detalheFather, $code );
 
         $code = str_replace( "**TABLE_NAME**", $this->tableName, $code );
         $code = str_replace( "**DB_CONFIG_FILE**", Util::getConfigFileDatabaseName(), $code );

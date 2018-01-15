@@ -33,7 +33,6 @@ class CodeSpecification
                       <div class="panel-body">
                   <form  class="navbar-form navbar" action="generator/CodeGenerator.class.php" method="POST">    
                     
-                    
                     <input type="hidden" name="tableName" value="' . $_GET['tableName'] . '">
                     
                     <div class="form-group">
@@ -47,15 +46,27 @@ class CodeSpecification
                         <input type="radio" name="type" class="form-control" value="list_form">
                         <label for="type">List/Form:</label>
                         <br>
-                        <input type="text" name="listName" class="form-control" value="' . $className . 'List"> /
+                        <label for="type">Class</label>
+                        <input type="text" name="listName" class="form-control" value="' . $className . 'List"> 
+                        <label for="type">Title</label>
+                        <input type="text" name="listTitle" class="form-control" value="Listagem de "> 
+                        <br><br>
+                        <label for="type">Class</label>
                         <input type="text" name="formName" class="form-control" value="' . $className . 'Form">
+                        <label for="type">Title</label>
+                        <input type="text" name="formTitle" class="form-control" value="Formulário de ">
                     </div>
                     <br>
                     <div class="form-group">
                         <input type="radio" name="type" value="detalhe">
                         <label for="type">Detalhe:</label>
                         <br>
+                        <label for="type">Class</label>
                         <input type="text" name="detalheName" class="form-control" value="' . $className . 'Detalhe">
+                        <label for="type">Title</label>
+                        <input type="text" name="detalheTitle" class="form-control" value="Detalhe de "> 
+                        <label for="type">Father</label>
+                        <input type="text" name="detalheFather" class="form-control" value="List"> 
                     </div>
                     <br>
                     <br>
@@ -74,7 +85,7 @@ class CodeSpecification
 
             } else {
 
-                echo 'Table does not exists.';
+                echo 'Table does not exist.';
                 echo '
                 <div class="panel-heading"><b>FORM INFO</b></div>
                       <div class="panel-body">

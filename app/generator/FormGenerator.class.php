@@ -12,6 +12,7 @@ class FormGenerator
 
     private $listName;
     private $formName;
+    private $formTitle;
 
     private $tableName;
     private $recordName;
@@ -20,11 +21,12 @@ class FormGenerator
 
     private $filePath;
 
-    function __construct($listName, $formName, $recordName, $tableName, $formItems)
+    function __construct($listName, $formName, $formTitle, $recordName, $tableName, $formItems)
     {
 
         $this->listName = $listName;
         $this->formName = $formName;
+        $this->formTitle = $formTitle;
 
         $this->recordName = $recordName;
         $this->tableName = $tableName;
@@ -63,6 +65,7 @@ class FormGenerator
 
         $code = str_replace("**FORM_CLASS_NAME**", $this->formName, $code);
         $code = str_replace("**LIST_NAME**", $this->listName, $code);
+        $code = str_replace("**FORM_LABEL**", $this->formTitle, $code);
 
         $code = str_replace("**TABLE_NAME**", $this->tableName, $code);
         $code = str_replace("**DB_CONFIG_FILE**", Util::getConfigFileDatabaseName(), $code);

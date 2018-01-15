@@ -12,15 +12,17 @@ class ListGenerator
     private $tableName;
     private $recordName;
     private $listName;
+    private $listTitle;
     private $formName;
     private $dataGridItems;
 
     private $filePath;
 
-    function __construct($listName, $formName, $recordName, $tableName, $dataGridItems)
+    function __construct($listName, $listTitle, $formName, $recordName, $tableName, $dataGridItems)
     {
 
         $this->listName = $listName;
+        $this->listTitle = $listTitle;
         $this->formName = $formName;
 
         $this->recordName = $recordName;
@@ -59,6 +61,7 @@ class ListGenerator
         $code = file_get_contents($this->filePath);
 
         $code = str_replace("**LIST_CLASS_NAME**", $this->listName, $code);
+        $code = str_replace("**LIST_LABEL**", $this->listTitle, $code);
 
         $code = str_replace("**SEARCH_ITEM_VALUE**", $this->dataGridItems[0]["column"], $code);
         $code = str_replace("**SEARCH_ITEM_LABEL**", $this->dataGridItems[0]["label"], $code);

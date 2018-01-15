@@ -38,7 +38,7 @@ class **LIST_CLASS_NAME** extends TPage
         //DATAGRID ------------------------------------------------------------------------------------------
         $this->datagrid = new TDatagridTables();
 
-        **DATA_GRID_ITEMS_LINE**
+**DATA_GRID_ITEMS_LINE**
         $actionEdit = new TDataGridAction(array('**FORM_NAME**', 'onEdit'));
         $actionEdit->setLabel('Editar');
         $actionEdit->setImage( "fa:pencil-square-o blue fa-lg" );
@@ -58,7 +58,7 @@ class **LIST_CLASS_NAME** extends TPage
 
         $container = new TVBox();
         $container->style = "width: 100%";
-        $container->add( TPanelGroup::pack( 'Listagem de **LIST_LABEL**', $this->form ) );
+        $container->add( TPanelGroup::pack( '**LIST_LABEL**', $this->form ) );
         $container->add( TPanelGroup::pack( NULL, $this->datagrid ) );
 
         parent::add( $container );

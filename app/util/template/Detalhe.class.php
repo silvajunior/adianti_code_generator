@@ -30,7 +30,7 @@ class **DETALHE_CLASS_NAME** extends TPage
         $this->form->addFields([new TLabel('')], [TElement::tag('label', '<i>* Campos obrigatórios</i>' ) ]);
 
         $this->form->addAction('Salvar', $action1, 'fa:save')->class = 'btn btn-sm btn-primary';
-        $this->form->addAction('Voltar', new TAction(array(**CLASSE_PAI_NOME**, 'onReload')), 'fa:arrow-left')->class = 'btn btn-sm btn-primary';
+        $this->form->addAction('Voltar', new TAction(array('**CLASSE_PAI_NOME**', 'onReload')), 'fa:arrow-left')->class = 'btn btn-sm btn-primary';
 
         $this->datagrid = new TDatagridTables();
 
@@ -57,7 +57,7 @@ class **DETALHE_CLASS_NAME** extends TPage
         $container = new TVBox();
         $container->style = "width: 100%";
 
-        $container->add(TPanelGroup::pack('Detalhe **DETALHE_LABEL**', $this->form));
+        $container->add(TPanelGroup::pack('**DETALHE_LABEL**', $this->form));
         $container->add(TPanelGroup::pack(NULL, $this->datagrid));
 
         parent::add($container);

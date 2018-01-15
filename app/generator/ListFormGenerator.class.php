@@ -13,18 +13,24 @@ class ListFormGenerator
 {
 
     private $listName;
+    private $listTitle;
+
     private $formName;
+    private $formTitle;
 
     private $recordName;
     private $tableName;
 
     private $itemsPost;
 
-    function __construct($listName, $formName, $recordName, $tableName, $itemsPost)
+    function __construct($listName, $listTitle, $formName, $formTitle, $recordName, $tableName, $itemsPost)
     {
 
         $this->listName = $listName;
+        $this->listTitle = $listTitle;
+
         $this->formName = $formName;
+        $this->formTitle = $formTitle;
 
         $this->recordName = $recordName;
         $this->tableName = $tableName;
@@ -38,7 +44,7 @@ class ListFormGenerator
 
         $gridItems = ListFormGenerator::getAllDatagridItems($this->itemsPost);
 
-        $listGenerator = new ListGenerator($this->listName, $this->formName, $this->recordName, $this->tableName, $gridItems);
+        $listGenerator = new ListGenerator($this->listName, $this->listTitle, $this->formName, $this->recordName, $this->tableName, $gridItems);
 
         if ($listGenerator->generate()) {
 
@@ -46,7 +52,7 @@ class ListFormGenerator
 
             $formItems = ListFormGenerator::getAllFormItems($this->itemsPost);
 
-            $formGenerator = new FormGenerator($this->listName, $this->formName, $this->recordName, $this->tableName, $formItems);
+            $formGenerator = new FormGenerator($this->listName, $this->formName, $this->formTitle, $this->recordName, $this->tableName, $formItems);
 
             if ($formGenerator->generate()) {
 
