@@ -16,6 +16,7 @@ class **DETALHE_CLASS_NAME** extends TPage
         parent::__construct();
 
         $this->form = new BootstrapFormBuilder('detalhe_**TABLE_NAME**');
+        $this->form->setFormTitle('**DETALHE_LABEL**');
         $this->form->class = 'detalhe_**TABLE_NAME**';
 
 **FORM_FIELD_CREATION_LINE**
@@ -57,7 +58,7 @@ class **DETALHE_CLASS_NAME** extends TPage
         $container = new TVBox();
         $container->style = "width: 100%";
 
-        $container->add(TPanelGroup::pack('**DETALHE_LABEL**', $this->form));
+        $container->add($this->form);
         $container->add(TPanelGroup::pack(NULL, $this->datagrid));
 
         parent::add($container);
