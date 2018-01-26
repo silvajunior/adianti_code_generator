@@ -6,7 +6,7 @@ class IsNullableGenerator
     public static function getInfo( $isnullable, $i )
     {
 
-        $combo = '<select name="item_is_nullable_' . $i . '">';
+        $combo = '<select class="browser-default" name="item_is_nullable_' . $i . '">';
 
         if( $isnullable == 'NO' ) {
 

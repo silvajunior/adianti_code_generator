@@ -69,7 +69,6 @@ class ListFormGenerator
             Util::errorMsg('> Error creating ' . $this->listName . '.');
 
         }
-
     }
 
     public static function getAllDatagridItems($items)

@@ -51,7 +51,7 @@ class WidgetGenerator
     private static function createWidgetsCombo( $selected )
     {
 
-        $combo = '<select name="item_widget_' . WidgetGenerator::$i . '">';
+        $combo = '<select class="browser-default" name="item_widget_' . WidgetGenerator::$i . '">';
 
         foreach (Adianti::WIDGETS_ARRAY as $widget) {
 

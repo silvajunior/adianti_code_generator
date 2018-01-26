@@ -11,7 +11,6 @@ require_once('DetalheGenerator.class.php');
 require_once('ListFormGenerator.class.php');
 require_once('../util/Util.class.php');
 
-
 include("../../content.php");
 
 headerContent("../../");
@@ -37,15 +36,31 @@ class CodeGenerator
 
     function __construct()
     {
+        //print inicial page
+        echo '<div class="container">
+                    <div class="row">
+                        <div class="card hoverable">
+                            <div class="card-content">
+                                 <span class="card-title"><b>Finish</b>
+                                    <i class="material-icons right">more_vert</i></span>
+                                <!-- /.col-lg-12 -->';
 
         $itemsPost = Util::getItemsFromPOST($_POST);
 
         $this->tableName = $_POST['tableName'];
-        $this->type = $_POST['type'];
+        $this->type = !empty($_POST['type']) ? $_POST['type'] : '';
 
-        if (mkdir('../files/' . $this->tableName, 0777, true)) {
+        if (!empty($_POST['tableName'])) {
 
-            Util::successMsg('> Folder ' . $this->tableName . ' created with success.');
+
+            if (!is_dir('../files/' . $this->tableName)) {
+
+                mkdir('../files/' . $this->tableName, 0777, true);
+                Util::successMsg(' Folder ' . $this->tableName . ' created with success.');
+
+            } else {
+                Util::errorMsg('Error creating folder "' . $this->tableName . '", folder already Exists.');
+            }
 
             if (isset($_POST['record'])) {
 
@@ -55,14 +70,13 @@ class CodeGenerator
 
                 if ($recordGenerator->generate()) {
 
-                    Util::successMsg('> ' . $this->recordName . ' created with success.');
+                    Util::successMsg($this->recordName . ' created with success.');
 
                 } else {
 
-                    Util::errorMsg('> Error creating ' . $this->recordName . '.');
+                    Util::errorMsg('Error creating ' . $this->recordName . '.');
 
                 }
-
             }
 
             if ($this->type == 'list_form') {
@@ -87,23 +101,28 @@ class CodeGenerator
 
                 if ($detalheGenerator->generate()) {
 
-                    Util::successMsg('> ' . $this->detalheName . ' created with success.');
+                    Util::successMsg($this->detalheName . ' created with success.');
 
                 } else {
 
-                    Util::errorMsg('> Error creating ' . $this->detalheName . '.');
+                    Util::errorMsg('Error creating ' . $this->detalheName . '.');
 
                 }
 
             }
 
-        } else {
-
-            Util::errorMsg('> Error creating folder ' . $this->tableName . '.');
-
         }
-
-        echo '<form action="../../index.php"><input type="submit" value="Back to index"></form>';
+        //print final page
+        echo '                <p>&nbsp;</p>
+                            </div><!-- /.card-content -->
+                            <div class="card-action">
+                                    <form action="../../index.php">
+                                        <button type="submit" class="btn #0091ea light-blue accent-4">Back to index</button>
+                                    </form>
+                             </div>
+                        </div><!-- /.row -->
+                    </div>
+                </div>';
 
     }
 

@@ -12,47 +12,107 @@ function headerContent($dir = "/")
                     <title>ADIANTI Code Generator</title>
                     <!-- Application custom CSS -->
                     <!-- Bootstrap -->
-                    <link href=\"{$dir}bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\">
-                  
-                    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-                    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-                    <!--[if lt IE 9]>
-                    <script src=\"https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js\"></script>
-                    <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>
-                    <![endif]-->
+                     
+                    <link href=\"https://use.fontawesome.com/releases/v5.0.4/css/all.css\" rel=\"stylesheet\">
+                 
+                     <!--Import Google Icon Font-->
+                      <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">
+                      <!--Import materialize.css-->
+                      <link type=\"text/css\" rel=\"stylesheet\" href=\"{$dir}lib/materialize/css/materialize.min.css\"  media=\"screen,projection\"/>
+                             <!--Let browser know website is optimized for mobile-->
+                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>
+       
+                    <style>
+                    .icon_style{
+                        position: absolute;
+                        right: 10px;
+                        top: 10px;
+                        font-size: 20px;
+                        color: white;
+                        cursor:pointer; 
+                    }
+                                    
+                      /* label focus color */
+                     .input-field input:focus + label {
+                       color: #0091ea !important;
+                     }
+                      /* label underline focus color */
+                     .row .input-field input:focus {
+                        border-bottom: 1px solid #0091ea !important;
+                        box-shadow: 0 1px 0 0 #0091ea !important
+                      }
+                      [type=\"radio\"]:checked + label:after,
+                      [type=\"radio\"].with-gap:checked + label:after {
+                          border: 2px solid #0277bd;
+                          background-color: #0277bd;
+                          z-index: 0;
+                      }
+                      [type=\"checkbox\"]:checked + label:after,
+                      [type=\"checkbox\"].filled-in:checked + label:after  {
+                          border: 2px solid #0277bd !important;
+                          background-color: #0277bd;
+                          z-index: 0;
+                       }
+                    </style>
                 </head>
                 
                 <body>
-                <div class=\"container\">
-                    <div class=\"row\">
-                        <div class=\"col-md-12\">
-                            <div class=\"page-header\">
-                                <h1>ADIANTI <small> Code Generator</small></h1>
-                            </div>
+                     <nav class=\"#1976d2 blue darken-2\" style=\"height: 100px\" role=\"navigation\">
+                        <div class=\"nav-wrapper container\">
+                          <a href=\"#\" class=\"brand-logo\" style=\"margin: 20px 0px 20px 0px;\"> <h5>ADIANTI <small> CODE Generator</small></h5></a>
                         </div>
-                    </div>
-                
+                      </nav>
                     <div class=\"row\">
-                        <div class=\"col-md-12\">
-                            <div class=\"panel panel-default\">
                 ";
 }
 
 function footerContent($dir = "/")
 {
     echo "<!-- end content -->
-                </div>
+              <!--Import jQuery before materialize.js-->
+              <script type=\"text/javascript\" src=\"https://code.jquery.com/jquery-3.2.1.min.js\"></script>
+                     <!-- jQuery (necessary for Bootstrap's JavaScript plugins)
+             <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script> -->
+       
+              <script type=\"text/javascript\" src=\"{$dir}lib/materialize/js/materialize.min.js\"></script>
+              
+              <!--Import jQuery Init Template-->
+              <script type=\"text/javascript\" src=\"{$dir}lib/materialize/js/init.js\"></script>
+    
+        </div><!-- and row content --> 
+         <footer class=\"page-footer #e6e6e6 grey lighten-3\" style=\"margin-top: 12%;\">
+          <div class=\"footer-copyright #d8d8d8 grey lighten-2\">
+            <div class=\"container\">
+            <b style=\"color: black\">" . date('Y') . "</b> 
+            <a class=\"black-text text-lighten-4 right\" href=\"#!\"><b>Dev</b> </a>
             </div>
-             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-             <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>
-                
-            <!-- Include all compiled plugins (below), or include individual files as needed -->
-            <script src=\"{$dir}bootstrap/js/bootstrap.min.js\"></script>
-    
-        </div>
+          </div>
+        </footer>
     </body>
-    
     </html>";
 }
 
+function breadcrumb($step = 1)
+{
 
+    $nav = ' <nav class="#9e9e9e grey">
+    <div class="nav-wrapper">
+      <div class="col s12" style="margin: auto 190px;">';
+
+    for ($i = 1; $i <= 4; $i++) {
+        if ($step == $i) {
+            $nav .= '<a  class="breadcrumb" href = "step0' . $i . '.php" ><b style="color:white"> Etapa 0' . $i . ' </b></a ></li > ';
+        } else {
+            $nav .= '<a  class="breadcrumb" href = "step0' . $i . '.php" > Etapa 0' . $i . ' </a ></li > ';
+        }
+    }
+    if ($step == 5) {
+        $nav .= '<a  class="breadcrumb" href = "step05.php" ><b style="color:white;"> Final</a ></b>';
+    } else {
+        $nav .= '<a  class="breadcrumb" href = "step05.php" style="color: rgba(255, 255, 255, 0.7);">Final</a >';
+    }
+    $nav .= '</div>
+            </div>
+          </nav>';
+    echo $nav;
+}

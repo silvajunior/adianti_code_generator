@@ -3,20 +3,28 @@ include("content.php");
 
 headerContent("");
 ?>
+    <div class="container">
+        <div class="row">
+            <!-- start content -->
+            <form class="col s12" action="app/CodeSpecification.class.php" method="GET">
+                <div class="card hoverable">
+                    <div class="card-content">
+                        <span class="card-title"><b>Infor Table Name</b>
+                                    <i class="material-icons right">more_vert</i></span>
+                        <div class="input-field col s12">
+                            <label for="tableName">Table name:</label>
+                            <input id="tableName" type="text" name="tableName" required/>
+                        </div><!-- /.col-lg-6 -->
+                        <p>&nbsp;</p>
+                    </div><!-- /.card-content -->
+                    <div class="card-action">
+                        <button type="submit" class="btn #0091ea light-blue accent-4">Next</button>
+                    </div>
+                </div><!-- /.row -->
 
-<div class="panel-heading"><b>Infor Table Name</b></div>
-    <div class="panel-body">
-        <!-- start content -->
-        <form  class="navbar-form navbar-left" action="app/CodeSpecification.class.php">
-            <div class="form-group">
-                <label for="tableName">Table name:</label>
-                <input id="tableName" type="text" name="tableName" class="form-control" placeholder="tb_usuario"   aria-describedby="basic-addon2">
-            </div>
-            <button type="submit" class="btn btn-default">Read</button>
-        </form>
+            </form>
+            <p>&nbsp;</p>
+        </div>
     </div>
-</div>
-
 <?php
 footerContent("");
-?>

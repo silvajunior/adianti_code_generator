@@ -11,14 +11,24 @@ class Util
     public static function successMsg( $msg )
     {
 
-        echo '<p style="color:green;">' . $msg . '<br/></p>';
-
+        echo '<div class="col s12">
+                <div id="card-alert" class="card green">
+                      <div class="card-content white-text">
+                        <p><i class="fa fa-check"></i> SUCCESS : ' . $msg . '.</p>
+                      </div>
+                    </div>
+               </div>';
     }
 
     public static function errorMsg( $msg )
     {
-
-        echo '<p style="color:red;">' . $msg . '<br/></p>';
+        echo '<div class="col s12">
+                    <div id="card-alert" class="card red">
+                          <div class="card-content white-text">
+                            <p><i class="fa fa-exclamation-circle"></i> ALERTA : ' . $msg . '</p>
+                          </div>
+                      </div>
+               </div>';
 
     }
 
@@ -34,11 +44,10 @@ class Util
 
     public static function getItemsFromPOST( $post )
     {
-
-        $data = array();
+        $data = [];
 
         $i = 0;
-        $temp = array();
+        $temp = [];
 
         foreach ( $post as $key => $value ) {
 
@@ -55,7 +64,7 @@ class Util
                 }else {
 
                     $data[$i] = $temp;
-                    $temp = array();
+                    $temp = [];
                     $temp[$key] = $value;
 
                     $i++;
@@ -67,7 +76,6 @@ class Util
         }
 
         $data[$i] = $temp;
-
         return $data;
 
     }

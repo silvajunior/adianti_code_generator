@@ -6,7 +6,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 */
 
-include_once('util/LoadConfig.class.php');
+namespace Util\Config\Conn;
+
+use Util\Config;
 
 class Connection
 {
@@ -14,7 +16,7 @@ class Connection
 
     public function connect()
     {
-        $config = LoadConfig::get();
+        $config = Config\LoadConfig::get();
         $type = $config->getType();
         $host = $config->getHost();
         $port = $config->getPort();
@@ -22,12 +24,12 @@ class Connection
         $user = $config->getUser();
         $pass = $config->getPass();
 
-        switch ( $type ) {
+        switch ($type) {
 
             case "pgsql":
 
                 $port = $port ? $port : "5432";
-                $pdo = new PDO(
+                $pdo = new \PDO(
                     "{$type}:host={$host};port={$port};dbname={$name};", $user, $pass
                 );
 
@@ -36,15 +38,15 @@ class Connection
             case "mysql":
 
                 $port = $port ? $port : "3306";
-                $pdo = new PDO(
+                $pdo = new \PDO(
                     "{$type}:host={$host};port={$port};dbname={$name};", $user, $pass,
-                    [ PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8" ]
+                    [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]
                 );
 
                 break;
         }
 
-        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         return $pdo;
     }
@@ -58,9 +60,15 @@ class Connection
         return static::$conn;
     }
 
-    protected function __construct() { }
+    protected function __construct()
+    {
+    }
 
-    private function __clone() { }
+    private function __clone()
+    {
+    }
 
-    private function __wakeup() { }
+    private function __wakeup()
+    {
+    }
 }

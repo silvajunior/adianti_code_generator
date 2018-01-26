@@ -4,14 +4,18 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('Connection.class.php');
+use Util\Config;
+use Util\Config\Conn;
+
+require_once "util/LoadConfig.class.php";
+require_once "Connection.class.php";
 
 class TableReader
 {
 
-    public static function getInfo( $tableName )
+    public static function getInfo($tableName )
     {
-        $config = LoadConfig::get();
+        $config = Config\LoadConfig::get();
         $type = $config->getType();
 
         $schema   = "information_schema.columns";
@@ -33,8 +37,8 @@ class TableReader
         }
 
         try {
-
-            $pdo = Connection::get()->connect();
+            $data = [];
+            $pdo = Conn\Connection::get()->connect();
 
             $stmt = $pdo->query( "SELECT * FROM {$schema} WHERE {$table} = '{$tableName}';" );
 
@@ -60,5 +64,3 @@ class TableReader
     }
 
 }
-
-?>
