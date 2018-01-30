@@ -23,7 +23,7 @@ class Util
     public static function errorMsg( $msg )
     {
         echo '<div class="col s12">
-                    <div id="card-alert" class="card red">
+                    <div id="card-alert" class="card red" style="z-index: 1;">
                           <div class="card-content white-text">
                             <p><i class="fa fa-exclamation-circle"></i> ALERTA : ' . $msg . '</p>
                           </div>

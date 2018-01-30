@@ -18,7 +18,7 @@ headerContent("");
                         <p>&nbsp;</p>
                     </div><!-- /.card-content -->
                     <div class="card-action">
-                        <button type="submit" class="btn #0091ea light-blue accent-4">Next</button>
+                        <button type="submit" class="btn #0091ea light-blue accent-4"><i class="material-icons right">arrow_forward</i>Next</button>
                     </div>
                 </div><!-- /.row -->
 

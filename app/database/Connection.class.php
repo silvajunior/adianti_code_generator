@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 namespace Util\Config\Conn;
 
 use Util\Config;
+use PDO;
 
 class Connection
 {

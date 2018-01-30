@@ -1,9 +1,9 @@
 {
-  "type": "pgsql",
+  "type": "mysql",
   "host": "localhost",
-  "port": "5432",
+  "port": "3306",
   "name": "db_name",
-  "user": "postgres",
+  "user": "user",
   "pass": "",
   "ini_file": "db_connection"
 }

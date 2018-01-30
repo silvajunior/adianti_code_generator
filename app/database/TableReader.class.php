@@ -57,7 +57,7 @@ class TableReader
 
         } catch ( PDOException $e ) {
 
-            echo $e->getMessage();
+            Util::errorMsg( $e->getMessage() );
 
         }
 

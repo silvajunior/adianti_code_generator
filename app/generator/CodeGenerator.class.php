@@ -117,7 +117,7 @@ class CodeGenerator
                             </div><!-- /.card-content -->
                             <div class="card-action">
                                     <form action="../../index.php">
-                                        <button type="submit" class="btn #0091ea light-blue accent-4">Back to index</button>
+                                        <button type="submit" class="btn #0091ea light-blue accent-4"><i class="material-icons right">arrow_back</i>Back to index</button>
                                     </form>
                              </div>
                         </div><!-- /.row -->

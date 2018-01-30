@@ -111,8 +111,8 @@ class CodeSpecification
                                     <p>&nbsp;</p><!-- expanding div content -->
                                 </div>
                                 <div class="card-action">
-                                    <button type="submit" class="btn #0091ea light-blue accent-4">Create</button>
-                                    <a class="waves-effect waves-light btn #0091ea light-blue accent-4" href="../index.php">Back</a>
+                                    <a class="waves-effect waves-light btn #0091ea light-blue accent-4" href="../index.php"><i class="material-icons right">arrow_back</i>Back</a>
+                                    <button type="submit" class="btn #4caf50 green">Create<i class="material-icons right">arrow_forward</i></button>
                                 </div>
                             </div><!-- /.card-content -->
                     </div><!-- row -->
@@ -147,7 +147,7 @@ class CodeSpecification
                                     Util::errorMsg('Error this table does not exist in the database: ' . $config->getName() . '.');
                                     ?>
                                     <form action="../index.php">
-                                        <button type="submit" class="btn">Back to index</button>
+                                        <button type="submit" class="btn #0091ea light-blue accent-4"><i class="material-icons right">arrow_back</i>Back to index</button>
                                     </form>
                                 </div><!-- /.col-lg-12 -->
                                 <p>&nbsp;</p>
