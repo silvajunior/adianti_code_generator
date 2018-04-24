@@ -35,6 +35,8 @@ class **LIST_CLASS_NAME** extends TPage
         $new_button = $this->form->addQuickAction( 'Novo' , new TAction(array('**FORM_NAME**', 'onEdit')), 'fa:file');
         $new_button->class = 'btn btn-sm btn-primary';
 
+        $this->form->addQuickAction( 'Limpar Busca' , new TAction(array($this, 'onClear')), 'fa:eraser red');
+
         //DATAGRID ------------------------------------------------------------------------------------------
         $this->datagrid = new TDatagridTables();
 
@@ -62,6 +64,16 @@ class **LIST_CLASS_NAME** extends TPage
         $container->add( TPanelGroup::pack( NULL, $this->datagrid ) );
 
         parent::add( $container );
+
+    }
+
+    public function onClear() {
+
+        if (TSession::getValue('filter_**RECORD_NAME**')) {
+            TSession::setValue('filter_**RECORD_NAME**', null);
+        }
+
+        $this->onReload();
 
     }
 
@@ -120,12 +132,8 @@ class **LIST_CLASS_NAME** extends TPage
 
                 switch ( $data->opcao ) {
 
-                    case "nome":
-                        $filter[] = new TFilter( $data->opcao, "LIKE", "%" . $data->nome . "%" );
-                        break;
-
                     default:
-                        $filter[] = new TFilter( $data->opcao, "LIKE", $data->nome . "%" );
+                        $filter[] = new TFilter( "LOWER(" . $data->opcao . ")", "LIKE", "NOESC:LOWER( '%" . $data->nome . "%' )" );
                         break;
 
                 }
